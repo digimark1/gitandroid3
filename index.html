@@ -346,7 +346,8 @@
 								};
 							
 							//--- LOCATION REQUEST ---//
-							if (load_str == "Location request"){
+							var load_subre = load_str.substring(0, 17);
+							if (load_subre == "Location request #"){
 								var load_sub_split = load_str.split("-");
 								var load_number = parseFloat(load_sub_split[0].substring(10));
 								localStorage.notification = 1;
