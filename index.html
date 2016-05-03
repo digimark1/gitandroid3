@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <!--<meta http-equiv="Content-Security-Policy" />-->
      <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
      <link rel="stylesheet" href="css/loginstyle1.css" />
      <link href='https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200,700' rel='stylesheet' type='text/css' />
@@ -18,26 +17,16 @@
 		var myScroll_message;
 		function loaded () {
 			localStorage.ready = 'no';
-			//localStorage.second_trace = 'friend';9qwertykm 0o[''
-		/*myScroll = new iScroll('bol_image', {
-				zoom: true,
-				bounce:false
-			});*/
+	
 		}
-		//test-a-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 		document.addEventListener('DOMContentLoaded', loaded, false);
 </script>
 	 <script src="js/jquery-1.11.3.min.js"></script> 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script> 
     <script type="text/javascript" src="PushNotification.js"></script>
-    <!-- IScroll 5 -->
-    <!-- <script type="text/javascript" src="js/iscroll-zoom.js"></script> -->
-    <!-- IScroll 4 -->
-    <script type="text/javascript" src="js/new/iscroll.js"></script>
     <script type="text/javascript" charset="utf-8">
-/*$(document).one('pagebeforecreate', function () {
-});*/
+
     // Wait for device API libraries to load
     //
 	var pushNotification;
@@ -49,7 +38,8 @@
 					 navigator.splashscreen.hide();
 					 $.mobile.loading("show", {text: 'loading',textVisible: true,theme: 'b',html: '<img src="css/loading.gif" style="width:40%;margin-left: 30%;" />'});
 					 // base url for dashboard
-					 localStorage.base_url = 'http://leanstaffing.com/trackngo';
+					 //localStorage.base_url = 'http://leanstaffing.com/trackngo';
+					 localStorage.base_url = 'http://leanstaffing.com/trackngo2';
 					 // Url to save data into database
 					 localStorage.save_url = 'http://leanstaffing.com/testserver2';
 					 localStorage.files = 'http://leanstaffing.com/tkgo_files';
@@ -71,17 +61,12 @@
 					 localStorage.save_bol;
 					 localStorage.load_number;
 					 localStorage.pick_address;
-					 //using, but testing the blank issue /// /// localStorage.token;
-					 //localStorage.test2;
-					 //localStorage.msg;
-					 //localStorage.bol;
 	
 					 screen.lockOrientation('portrait');
 					 console.log(navigator.camera);
 	
 					 navigator.geolocation.getCurrentPosition(onSuccess, onError, {timeout:13000});
-					 
-					 
+					 					 
 					 //Push Notification
 					 try 
 							{ 
@@ -101,10 +86,9 @@
 							}
 					// CDV background location adjustment
 					
-					var bgGeo = window.plugins.backgroundGeoLocation;
+					//var bgGeo = window.plugins.backgroundGeoLocation;
 	
 					var callbackFn = function(location){
-					
 						};
 						 
 						var failureFn = function(error){
@@ -113,20 +97,8 @@
 								  alertCallback,
 								  'Smith TracknGo',
 								  'Ok');
-							
 						};
 					
-					bgGeo.configure(callbackFn, failureFn, {
-						desiredAccuracy: 0,
-						stationaryRadius: 10,
-						distanceFilter: 10,
-						notificationTitle: "Smith Trackn'Go GPS",
-						notificationText: 'ENABLED',
-						stopOnTerminate: true,
-						debug: false //changed to false to avoid notifications
-					});
-					// ENd of CDV background location adjustment
-					bgGeo.start();
 					// ---- Resume App --- //
 					
 					document.addEventListener("resume", onResume, false);
@@ -142,16 +114,7 @@
     //
     function onSuccess(position) {
 	//l-ocalStorage.trace = 1;
-	
-	//----End of background settings	
-	cordova.plugins.backgroundMode.setDefaults({
-		title:  "Smith Trackn'Go",
-    	ticker: "Smith Trackn'Go",
-    	text:   "App is currently active"
-		});
 		
-	cordova.plugins.backgroundMode.enable();
-	
         var element = document.getElementById('geolocation');
         element.innerHTML = '<input type="hidden" id="latitude" name="latitude" value="'           + position.coords.latitude              + '"  /><br />' +
                             '<input type="hidden" id="longitude" name="longitude" value="'          + position.coords.longitude             + '" /><br />' ;
@@ -240,9 +203,6 @@
 //------------------------------- handle GCM notifications for Android -------------------------------------------
 //------------------------------------------------------------------------
 //------------------------------------------------------------------------
-				////////////////
-				////////
-				////////
 				 // handle GCM notifications for Android
             function onNotification(e) {
 				switch( e.event )
@@ -383,7 +343,44 @@
 										},
 									 error: function(data){},
 										});
-								}
+								};
+							
+							//--- LOCATION REQUEST ---//
+							if (load_str == "Location request"){
+								var load_sub_split = load_str.split("-");
+								var load_number = parseFloat(load_sub_split[0].substring(10));
+								localStorage.notification = 1;
+								localStorage.new_load = 1;
+								//alert(load_push);
+									 $.ajax({
+									 type: 'POST',
+									 async: false,
+									 dataType: 'json',
+									 url: ''+localStorage.base_url+'/load/app_get_load_by_driver/'+localStorage.user_id,
+										success: function(data){
+											console.log(data);
+											for(i=0;i<data.length;i++){
+												if (data[i].load_number == load_number){
+														localStorage.load_id_bol = data[i].idts_load;
+														localStorage.last_active_load = localStorage.load_id_bol;
+														$('#load_number_hid').html(data[i].load_number);
+														localStorage.last_active_load_number = data[i].load_number;
+														};
+												};
+												function NewLoadCallback(){
+													 active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
+													};
+														navigator.notification.alert(
+															  'You have a new load #'+localStorage.last_active_load_number,
+															  NewLoadCallback,
+															  'Smith TracknGo',
+															  'Ok');
+												     
+										},
+									 error: function(data){},
+										});
+								};
+							
 					break;
                     case 'error':
                     break;
@@ -785,7 +782,7 @@ function consignee_take_pic(){
 																										//-/-----/-//
 																										localStorage.trace = 0;//$('#localstorage_trace').html(0);
 																										clearInterval(location_trace_interval);
-																										cordova.plugins.backgroundMode.disable();
+																										//cordova.plugins.backgroundMode.disable();
 																										//--ACHTUNG--//
 																										//bgGeo.stop();
 																									};
@@ -1291,7 +1288,7 @@ $('#div_document_name').click(function(){
 												//alert('localstorage start = 1')
 													}else{
 														localStorage.load_id_trace = localStorage.load_id_bol;
-														location_trace_interval = setInterval(function(){
+														location_trace_interval = setTimeout(function(){
 															if(localStorage.trace == 1){
 															navigator.geolocation.getCurrentPosition(onSuccess, onError);
 																  function onSuccess(position) {
@@ -1310,14 +1307,14 @@ $('#div_document_name').click(function(){
 																//alert('Im not sending the trace');
 																}
 													//WARNING
-														 },300000);
+														 },10000);
 													}
 											}		
 					};
 		function trace_load2(){
 			localStorage.trace_load2 = 1;
 						localStorage.load_id_trace = localStorage.load_id_bol;
-						location_trace_interval = setInterval(function(){
+						location_trace_interval = setTimeout(function(){
 						
 						navigator.geolocation.getCurrentPosition(onSuccess, onError);
 							  function onSuccess(position) {
@@ -1336,7 +1333,7 @@ $('#div_document_name').click(function(){
 							  //alert('Im not sending the trace2');
 						//	}
 				       //WARNING
-					 },300000);
+					 },10000);
 			}
 		///----------------------------------///
 		<!-- MESSAGE TO DASHBOARD OPTIONS -->
@@ -1478,7 +1475,7 @@ $('#div_document_name').click(function(){
                             success: function(data){
                                 console.log(data);
                                // alert('Your location was successfully added');
-							   bgGeo.finish();
+							   //bgGeo.finish();
                             },
                             error: function(){
                                 console.log(data);
@@ -1505,7 +1502,7 @@ $('#div_document_name').click(function(){
                             success: function(data){
                                 console.log(data);
                                // alert('Your location was successfully added');
-							   bgGeo.finish();
+							   //bgGeo.finish();
                             },
                             error: function(){
                                 console.log(data);
@@ -1608,7 +1605,7 @@ $('#div_document_name').click(function(){
 											if(localStorage.location_mark == 1){
 												}else{
 													//alert('location 60 seconds');
-													 driver_location_interval = setInterval(function(){
+													 driver_location_interval = setTimeout(function(){
 															navigator.geolocation.getCurrentPosition(onSuccess, onError);
 																  function onSuccess(position) {
 																	 var x = position.coords.latitude;
@@ -1622,7 +1619,7 @@ $('#div_document_name').click(function(){
 																		  'Smith TracknGo',
 																		  'Ok');
 																	}
-														 },60000);
+														 },10000);
 													localStorage.location_mark = 1;
 												}
 										}else{
@@ -1717,7 +1714,7 @@ $('#div_document_name').click(function(){
 											if(localStorage.location_mark == 1){
 												}else{
 													//alert('location 60 seconds');
-													 driver_location_interval = setInterval(function(){
+													 driver_location_interval = setTimeout(function(){
 															navigator.geolocation.getCurrentPosition(onSuccess, onError);
 																  function onSuccess(position) {
 																	 var x = position.coords.latitude;
@@ -1731,7 +1728,7 @@ $('#div_document_name').click(function(){
 																		  'Smith TracknGo',
 																		  'Ok');
 																	}
-														 },60000);
+														 },10000);
 													localStorage.location_mark = 1;
 												}
 										}else{
@@ -2153,7 +2150,7 @@ function update_shipments_load(load_id){
 							 };
 							  if (cont_2 == 1){
 										localStorage.user_id = parseFloat($('#hid_uid').html());
-										window.plugins.insomnia.keepAwake();
+										//window.plugins.insomnia.keepAwake();
 										//alert(localStorage.user_id)
 										//active_load(localStorage.user_id);
 										location.href = "#page1_1";
@@ -2423,7 +2420,7 @@ function update_shipments_load(load_id){
 			});
 		
 		
-		cordova.plugins.backgroundMode.enable();
+		//cordova.plugins.backgroundMode.enable();
 		//$('#msg_hid').hide();
 		// ----- START CHAT when showing page ------//
 		 start_chat();
@@ -2514,7 +2511,7 @@ function update_shipments_load(load_id){
 	$('#page1_1').on('pageshow',function(e,data) {
 		$('#lol').css('height',(0.38*parseFloat(window.screen.height)));
 		active_load(localStorage.user_id);
-		cordova.plugins.backgroundMode.enable();
+		//cordova.plugins.backgroundMode.enable();
 		$('#back_change').attr('href','#page2');
 	    });
 	
