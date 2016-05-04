@@ -61,12 +61,9 @@
 					 localStorage.save_bol;
 					 localStorage.load_number;
 					 localStorage.pick_address;
-	
 					 screen.lockOrientation('portrait');
 					 console.log(navigator.camera);
-	
 					 navigator.geolocation.getCurrentPosition(onSuccess, onError, {timeout:13000});
-					 					 
 					 //Push Notification
 					 try 
 							{ 
@@ -368,13 +365,14 @@
 														localStorage.last_active_load_number = data[i].load_number;
 														};
 												};
-												function NewLoadCallback(){
+												function NewRequestCallback(){
+													alert('request callback');
 													 active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
 													 location_request();
 													};
 														navigator.notification.alert(
 															  'Location shared',
-															  NewLoadCallback,
+															  NewRequestCallback,
 															  'Smith TracknGo',
 															  'Ok');
 										},
