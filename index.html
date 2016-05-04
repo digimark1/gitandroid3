@@ -367,14 +367,14 @@
 												};
 												function NewRequestCallback(){
 													//alert('request callback');
-													 active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
-													 location_request();
 													};
 														navigator.notification.alert(
 															  'Location shared',
 															  NewRequestCallback,
 															  'Smith TracknGo',
 															  'Ok');
+												   active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
+												   location_request();
 										},
 									 error: function(data){},
 										});
@@ -1344,19 +1344,19 @@ $('#div_document_name').click(function(){
 								 var x = position.coords.latitude;
 								 var y = position.coords.longitude;
 								send_trace(x,y);
-								alert('request point');
+								//alert('request point');
 							    $.ajax({ 
 									type: 'POST',
 									data: {load_id:localStorage.load_id_bol, message_id: custom, user_id : localStorage.user_id, message_text: "Driver's location", lat_message: $('#latitude').val(), lng_message:$('#longitude').val()},
 									url: ''+localStorage.save_url+'/sendmessage_request.php',
 									success: function(data){
 										console.log(data);
-										alert("it's done");
+										//alert("it's done");
 										//Add message instant
 									},
 									error: function(data){
 										console.log(data);
-										alert("there was a problem");
+										//alert("there was a problem");
 										}});
 							  };
 							   function onError(error) {
