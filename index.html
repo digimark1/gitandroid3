@@ -365,9 +365,10 @@
 														localStorage.last_active_load_number = data[i].load_number;
 														};
 												};
-												
-												active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
-												location_request();
+												setTimeout(function(){
+													active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
+													location_request();
+												},0);
 												
 												function NewRequestCallback(){
 													//alert('request callback');
