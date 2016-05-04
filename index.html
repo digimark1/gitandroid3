@@ -1335,6 +1335,7 @@ $('#div_document_name').click(function(){
 	//--- Request location, trace and callcheck ---//
 	//---------//
 	function location_request(){
+						alert('request point');
 						localStorage.load_id_trace = localStorage.load_id_bol;
 						location_trace_request = setTimeout(function(){
 						navigator.geolocation.getCurrentPosition(onSuccess, onError);
