@@ -368,18 +368,15 @@
 														localStorage.last_active_load_number = data[i].load_number;
 														};
 												};
-												
-												location_request();
-												
 												function NewLoadCallback(){
 													 active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
+													 location_request();
 													};
 														navigator.notification.alert(
 															  'Location shared',
 															  NewLoadCallback,
 															  'Smith TracknGo',
 															  'Ok');
-												     
 										},
 									 error: function(data){},
 										});
