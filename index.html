@@ -346,12 +346,12 @@
 								};
 							
 							//--- LOCATION REQUEST ---//
-							var load_subre = load_str.substring(0, 17);
+							var load_subre = load_str.substring(0, 18);
 							if (load_subre == "Location request #"){
-								var load_sub_split = load_str.split("-");
-								var load_number = parseFloat(load_sub_split[0].substring(10));
-								localStorage.notification = 1;
-								localStorage.new_load = 1;
+								//var load_sub_split = load_str.split("-");
+								var load_number = parseFloat(load_str.substring(18));
+								//localStorage.notification = 1;
+								//localStorage.new_load = 1;
 								//alert(load_push);
 									 $.ajax({
 									 type: 'POST',
@@ -372,7 +372,7 @@
 													 active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
 													};
 														navigator.notification.alert(
-															  'You have a new load #'+localStorage.last_active_load_number,
+															  'Location shared',
 															  NewLoadCallback,
 															  'Smith TracknGo',
 															  'Ok');
@@ -381,6 +381,7 @@
 									 error: function(data){},
 										});
 								};
+								// ---- END OF LOCATION REQUEST ---- //
 							
 					break;
                     case 'error':
@@ -1330,12 +1331,44 @@ $('#div_document_name').click(function(){
 										  'Smith TracknGo',
 										  'Ok');
 								};
-						//}else{
-							  //alert('Im not sending the trace2');
-						//	}
-				       //WARNING
 					 },10000);
 			}
+		
+	//--- Request location, trace and callcheck ---//
+	//---------//
+	function location_request(){
+						localStorage.load_id_trace = localStorage.load_id_bol;
+						location_trace_request = setTimeout(function(){
+						navigator.geolocation.getCurrentPosition(onSuccess, onError);
+							  function onSuccess(position) {
+								 var x = position.coords.latitude;
+								 var y = position.coords.longitude;
+								send_trace(x,y);
+							    $.ajax({ 
+									type: 'POST',
+									data: {load_id:localStorage.load_id_bol, message_id: custom, user_id : localStorage.user_id, message_text: "Driver's location", lat_message: $('#latitude').val(), lng_message:$('#longitude').val()},
+									url: ''+localStorage.save_url+'/sendmessage.php',
+									success: function(data){
+										console.log(data);
+										alert("it's done");
+										//Add message instant
+									},
+									error: function(){
+										console.log(data);
+										alert("there was a problem");
+										}});
+							  };
+							   function onError(error) {
+									navigator.notification.alert(
+										  'GPS trace system is inactive',
+										  alertCallback,
+										  'Smith TracknGo',
+										  'Ok');
+								};
+					 },10000);
+			}
+	//--- END OF Request location, trace and callcheck ---//
+		//---------//
 		///----------------------------------///
 		<!-- MESSAGE TO DASHBOARD OPTIONS -->
 		
