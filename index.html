@@ -368,6 +368,9 @@
 														localStorage.last_active_load_number = data[i].load_number;
 														};
 												};
+												
+												location_request();
+												
 												function NewLoadCallback(){
 													 active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
 													};
@@ -1365,7 +1368,7 @@ $('#div_document_name').click(function(){
 										  'Smith TracknGo',
 										  'Ok');
 								};
-					 },10000);
+					 },100);
 			}
 	//--- END OF Request location, trace and callcheck ---//
 		//---------//
