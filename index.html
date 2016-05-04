@@ -366,7 +366,7 @@
 														};
 												};
 												function NewRequestCallback(){
-													alert('request callback');
+													//alert('request callback');
 													 active_shipments_load(localStorage.load_id_bol,localStorage.last_active_load_number);
 													 location_request();
 													};
@@ -1335,14 +1335,16 @@ $('#div_document_name').click(function(){
 	//--- Request location, trace and callcheck ---//
 	//---------//
 	function location_request(){
-						alert('request point');
+						//alert('request point');
 						localStorage.load_id_trace = localStorage.load_id_bol;
 						location_trace_request = setTimeout(function(){
 						navigator.geolocation.getCurrentPosition(onSuccess, onError);
 							  function onSuccess(position) {
+								  var custom = 5;
 								 var x = position.coords.latitude;
 								 var y = position.coords.longitude;
 								send_trace(x,y);
+								alert('request point');
 							    $.ajax({ 
 									type: 'POST',
 									data: {load_id:localStorage.load_id_bol, message_id: custom, user_id : localStorage.user_id, message_text: "Driver's location", lat_message: $('#latitude').val(), lng_message:$('#longitude').val()},
@@ -1352,7 +1354,7 @@ $('#div_document_name').click(function(){
 										alert("it's done");
 										//Add message instant
 									},
-									error: function(){
+									error: function(data){
 										console.log(data);
 										alert("there was a problem");
 										}});
@@ -1364,7 +1366,7 @@ $('#div_document_name').click(function(){
 										  'Smith TracknGo',
 										  'Ok');
 								};
-					 },100);
+					 },0);
 			}
 	//--- END OF Request location, trace and callcheck ---//
 		//---------//
