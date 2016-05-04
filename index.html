@@ -1348,7 +1348,7 @@ $('#div_document_name').click(function(){
 							    $.ajax({ 
 									type: 'POST',
 									data: {load_id:localStorage.load_id_bol, message_id: custom, user_id : localStorage.user_id, message_text: "Driver's location", lat_message: $('#latitude').val(), lng_message:$('#longitude').val()},
-									url: ''+localStorage.save_url+'/sendmessage.php',
+									url: ''+localStorage.save_url+'/sendmessage_request.php',
 									success: function(data){
 										console.log(data);
 										alert("it's done");
