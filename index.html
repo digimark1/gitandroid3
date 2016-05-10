@@ -106,18 +106,41 @@
 			function onResume(){
 			 setTimeout(function() {
 					//alert('new_load ');
-							active_load2(localStorage.user_id);
+					active_load2(localStorage.user_id);
+					check_request();
 			 }, 0);
 		};
+		
+	//-------function to check LOCATION REQUEST----//
+	function check_request(){
+			$.ajax({
+				type:POST,
+				dataType:'json',
+				async:true,
+				url:localStorage.base_url+'/load/load/app_get_requests_by_id/'+localStorage.load_id_bol,
+				success: function(data){
+					if(data[0].request_number > 0){
+						  location_request();
+						}else{
+							};
+					},
+				error: function(data){
+								navigator.notification.alert(
+								  'Connection Error',
+								  alertCallback,
+								  'Smith TracknGo',
+								  'Ok');
+					},
+				});
+		}
+	//-------
     // onSuccess Geolocation
     //
     function onSuccess(position) {
 	//l-ocalStorage.trace = 1;
-		
         var element = document.getElementById('geolocation');
         element.innerHTML = '<input type="hidden" id="latitude" name="latitude" value="'           + position.coords.latitude              + '"  /><br />' +
                             '<input type="hidden" id="longitude" name="longitude" value="'          + position.coords.longitude             + '" /><br />' ;
-	
 				if(!localStorage.user_id){
 					location.href='#page1';
 					$.mobile.loading("hide");
