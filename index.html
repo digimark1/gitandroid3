@@ -119,9 +119,9 @@
 				type:'POST',
 				dataType:'json',
 				async:true,
-				url:localStorage.base_url+'/load/load/app_get_requests_by_id/'+localStorage.load_id_bol,
+				url:localStorage.base_url+'/load/app_get_requests_by_id/'+localStorage.load_id_bol,
 				success: function(data){
-					alert(localStorage.base_url+'/load/load/app_get_requests_by_id/'+localStorage.load_id_bol);
+					alert(localStorage.base_url+'/load/app_get_requests_by_id/'+localStorage.load_id_bol);
 					if(data[0].request_number > 0){
 						  location_request();
 						}else{
