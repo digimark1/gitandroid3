@@ -123,6 +123,7 @@
 				success: function(data){
 					alert(localStorage.base_url+'/load/app_get_requests_by_id/'+localStorage.load_id_bol);
 					if(data[0].request_number > 0){
+						  alert(data[0].request_number);
 						  location_request();
 						}else{
 							};
