@@ -114,12 +114,14 @@
 		
 	//-------function to check LOCATION REQUEST----//
 	function check_request(){
+		alert('in check_request');
 			$.ajax({
-				type:POST,
+				type:'POST',
 				dataType:'json',
 				async:true,
 				url:localStorage.base_url+'/load/load/app_get_requests_by_id/'+localStorage.load_id_bol,
 				success: function(data){
+					alert(localStorage.base_url+'/load/load/app_get_requests_by_id/'+localStorage.load_id_bol);
 					if(data[0].request_number > 0){
 						  location_request();
 						}else{
