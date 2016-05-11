@@ -107,23 +107,25 @@
 			 setTimeout(function() {
 					//alert('new_load ');
 					active_load2(localStorage.user_id);
-					check_request();
+					if(localStorage.user_id){
+						check_request();
+					}
 					//
 			 }, 0);
 		};
 		
 	//-------function to check LOCATION REQUEST----//
 	function check_request(){
-		alert('in check_request');
+		//alert('in check_request');
 			$.ajax({
 				type:'POST',
 				dataType:'json',
 				async:true,
 				url:localStorage.base_url+'/load/app_get_requests_by_id/'+localStorage.load_id_bol,
 				success: function(data){
-					alert(localStorage.base_url+'/load/app_get_requests_by_id/'+localStorage.load_id_bol);
+					//alert(localStorage.base_url+'/load/app_get_requests_by_id/'+localStorage.load_id_bol);
 					if(data[0].request_number > 0){
-						  alert(data[0].request_number);
+						  //alert(data[0].request_number);
 						  location_request();
 						}else{
 							};
