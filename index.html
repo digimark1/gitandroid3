@@ -106,7 +106,11 @@
 			function onResume(){
 			 setTimeout(function() {
 					//alert('new_load ');
-					active_load2(localStorage.user_id);
+					var page = $(':mobile-pagecontainer').pagecontainer('getActivePage')[0].id;
+						//--- Check if you are on page1_1 ---//
+						if(page == 'page1_1'){
+							active_load2(localStorage.user_id);
+						};
 					if(localStorage.user_id){
 						check_request();
 					}
@@ -404,11 +408,11 @@
 												function NewRequestCallback(){
 													//alert('request callback');
 													};
-														navigator.notification.alert(
+														/*navigator.notification.alert(
 															  'Location shared',
 															  NewRequestCallback,
 															  'Smith TracknGo',
-															  'Ok');
+															  'Ok');*/
 										},
 									 error: function(data){},
 										});
